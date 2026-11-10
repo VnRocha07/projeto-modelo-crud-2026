@@ -91,10 +91,13 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - run: uv sync --no-dev
         working-directory: api
+      # sem package-lock.json versionado, instalamos antes e a action so executa
+      - run: npm install
+        working-directory: e2e
       - uses: cypress-io/github-action@v6
         with:
           working-directory: e2e
-          install-command: npm install
+          install: false
           start: uv run --directory ../api uvicorn app.main:app --port 8000
           wait-on: http://localhost:8000/api/saude
       - uses: actions/upload-artifact@v4
