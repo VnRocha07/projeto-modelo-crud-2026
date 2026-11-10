@@ -126,3 +126,33 @@ describe("API (sem interface)", () => {
     });
   });
 });
+
+describe("Rede (cy.intercept)", () => {
+  beforeEach(() => {
+    cy.resetarBanco();
+    cy.visit("/");
+  });
+
+  it("confere que a tela chama POST /api/produtos e recebe 201", () => {
+    cy.intercept("POST", "/api/produtos").as("criar");
+    cy.preencherProduto({ sku: "ALI-002", nome: "Chá verde", preco: "9.90", quantidade: "20", categoria: "Alimentos" });
+    cy.dataCy("btn-salvar").click();
+    cy.wait("@criar").then(({ request, response }) => {
+      expect(request.body).to.include({ sku: "ALI-002", categoria_id: 3 });
+      expect(response.statusCode).to.eq(201);
+    });
+    cy.linhaDoProduto("ALI-002").should("exist");
+  });
+
+  it("mostra a mensagem de erro quando o servidor falha (resposta simulada)", () => {
+    cy.intercept("POST", "/api/produtos", {
+      statusCode: 500,
+      body: { detail: "falha simulada no servidor" },
+    }).as("criar");
+    cy.preencherProduto({ sku: "ELE-050", nome: "Qualquer", preco: "1", quantidade: "1" });
+    cy.dataCy("btn-salvar").click();
+    cy.wait("@criar");
+    cy.dataCy("mensagem").should("have.class", "erro").and("contain", "falha simulada");
+    cy.linhaDoProduto("ELE-050").should("not.exist"); // nada foi gravado
+  });
+});

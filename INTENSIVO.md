@@ -83,11 +83,15 @@ Referência: [`db/mysql/01-schema.sql`](db/mysql/01-schema.sql) e [`db/seed.sql`
 
 **Checkpoint** (no modelo, inserindo SKU repetido):
 
-<!-- TODO prof: conferir a saida literal no MySQL 8.4 antes da aula -->
+```bash
+docker compose exec db mysql -uapp -papp estoque -e \
+  "INSERT INTO produto (sku, nome, preco, quantidade, categoria_id) VALUES ('ELE-001', 'Repetido', 1.00, 1, 1)"
+```
+```
+ERROR 1062 (23000) at line 1: Duplicate entry 'ELE-001' for key 'produto.uq_produto_sku'
+```
 
-```
-ERROR 1062 (23000): Duplicate entry 'ELE-001' for key 'produto.uq_produto_sku'
-```
+(No cliente interativo `mysql>`, a mesma linha aparece sem o `at line 1`.)
 
 ### Etapa 2 — API e CRUD (1h30)
 
@@ -156,7 +160,7 @@ npm install
 npm run e2e
 ```
 
-**Checkpoint:** todos os testes de `produtos.cy.js` verdes (10 testes em 3 `describe`).
+**Checkpoint:** todos os testes de `produtos.cy.js` verdes (12 testes em 4 `describe`).
 
 ### Etapa 5 — CI (bônus, 30 min)
 

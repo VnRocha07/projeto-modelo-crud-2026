@@ -94,12 +94,23 @@ jobs:
       # sem package-lock.json versionado, instalamos antes e a action so executa
       - run: npm install
         working-directory: e2e
+      - name: Sobe a API em segundo plano
+        working-directory: api
+        run: |
+          nohup uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 > ../api.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:8000/api/saude && exit 0
+            sleep 1
+          done
+          cat ../api.log && exit 1
       - uses: cypress-io/github-action@v6
         with:
           working-directory: e2e
           install: false
-          start: uv run --directory ../api uvicorn app.main:app --port 8000
-          wait-on: http://localhost:8000/api/saude
+          config: baseUrl=http://127.0.0.1:8000
+      - name: Log da API
+        if: always()
+        run: cat api.log
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
