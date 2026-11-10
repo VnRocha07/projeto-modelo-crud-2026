@@ -13,7 +13,13 @@ Projeto de referência para as UCs **Garantia da Qualidade de Software** e **Ban
 | **Testes E2E com Cypress** | [`e2e/cypress/e2e/produtos.cy.js`](e2e/cypress/e2e/produtos.cy.js) |
 | **CI** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml): os três níveis a cada push |
 
-O roteiro do intensivão e o que cada equipe precisa apresentar estão em **[INTENSIVO.md](INTENSIVO.md)**.
+## 📚 Por onde começar
+
+| Guia | Para quê |
+|---|---|
+| **[INTENSIVO.md](INTENSIVO.md)** | o que cada equipe precisa entregar, o roteiro da aula e a rubrica |
+| **[docs/PASSO-A-PASSO.md](docs/PASSO-A-PASSO.md)** | replicar este modelo no **seu** projeto, passo a passo, com conferência em cada etapa |
+| **[docs/CYPRESS.md](docs/CYPRESS.md)** | Cypress do zero: seletores, asserções, reset do banco, `cy.request`, `cy.intercept`, CI |
 
 ---
 

@@ -6,6 +6,9 @@
 Cada equipe apresenta **um projeto próprio** com um CRUD de verdade. Este repositório é o
 **modelo**: tudo o que se pede aqui está implementado nele, funcionando, para consulta.
 
+> 📘 **Guias detalhados:** [replicar no seu projeto, passo a passo](docs/PASSO-A-PASSO.md) ·
+> [Cypress intensivo](docs/CYPRESS.md)
+
 > Não copie o domínio. O "Estoque" é só o exemplo. Escolha o seu: agenda de consultas,
 > controle de academia, cardápio de restaurante, inventário de laboratório…
 
@@ -147,7 +150,7 @@ uv run pytest -m integracao -q
 
 ### Etapa 4 — Cypress (1h30)
 
-Referência: [`e2e/`](e2e/).
+Referência: [`e2e/`](e2e/) e o guia completo **[docs/CYPRESS.md](docs/CYPRESS.md)**.
 
 1. Coloque `data-cy="..."` em todo elemento que o teste vai tocar.
 2. Crie uma rota de reset **só para ambiente de teste** e chame no `beforeEach`.
