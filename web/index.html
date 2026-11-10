@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estoque — projeto modelo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>📦 Estoque</h1>
+    <p>Projeto modelo: CRUD · API Python · banco SQL · testes unitários e E2E</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2 id="titulo-form" data-cy="titulo-form">Novo produto</h2>
+      <form id="form-produto" data-cy="form-produto" novalidate>
+        <input type="hidden" id="produto-id">
+        <label>SKU
+          <input id="sku" data-cy="input-sku" placeholder="ELE-003" required>
+        </label>
+        <label>Nome
+          <input id="nome" data-cy="input-nome" required>
+        </label>
+        <label>Preço (R$)
+          <input id="preco" data-cy="input-preco" type="number" step="0.01" min="0" required>
+        </label>
+        <label>Quantidade
+          <input id="quantidade" data-cy="input-quantidade" type="number" step="1" min="0" required>
+        </label>
+        <label>Categoria
+          <select id="categoria" data-cy="select-categoria" required></select>
+        </label>
+        <div class="acoes">
+          <button type="submit" data-cy="btn-salvar">Salvar</button>
+          <button type="button" id="btn-cancelar" data-cy="btn-cancelar" class="secundario" hidden>Cancelar edição</button>
+        </div>
+      </form>
+      <p id="mensagem" data-cy="mensagem" role="status"></p>
+    </section>
+
+    <section class="card">
+      <div class="topo-lista">
+        <h2>Produtos</h2>
+        <input id="busca" data-cy="input-busca" type="search" placeholder="Buscar por nome ou SKU">
+      </div>
+      <table>
+        <thead>
+          <tr><th>SKU</th><th>Nome</th><th>Categoria</th><th>Preço</th><th>Qtd.</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="tabela" data-cy="tabela-produtos"></tbody>
+      </table>
+      <p id="vazio" data-cy="lista-vazia" hidden>Nenhum produto encontrado.</p>
+    </section>
+
+    <section class="card">
+      <h2>Resumo por categoria</h2>
+      <table>
+        <thead><tr><th>Categoria</th><th>Produtos</th><th>Unidades</th><th>Valor em estoque</th></tr></thead>
+        <tbody id="resumo" data-cy="tabela-resumo"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

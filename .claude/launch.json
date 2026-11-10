@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "estoque-api",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd api && APP_ENV=test DATABASE_URL=sqlite:///./estoque-e2e.db uv run uvicorn app.main:app --host 127.0.0.1 --port 8000"],
+      "port": 8000
+    }
+  ]
+}

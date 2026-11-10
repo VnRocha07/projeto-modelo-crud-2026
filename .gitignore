@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.db
+
+# Node / Cypress
+node_modules/
+e2e/cypress/screenshots/
+e2e/cypress/videos/
+
+.DS_Store

@@ -1,0 +1,35 @@
+[project]
+name = "estoque-api"
+version = "1.0.0"
+description = "Projeto modelo: CRUD com API Python, banco SQL, testes unitarios e E2E"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "sqlalchemy>=2.0",
+    "pymysql>=1.1",
+    "cryptography>=43",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "httpx>=0.28",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "integracao: testes que falam com um banco de verdade (SQLite ou MySQL)",
+]
+addopts = "-ra"
+filterwarnings = ["ignore:Using `httpx` with `starlette.testclient`"]
+
+[tool.coverage.run]
+source = ["app"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true

@@ -1,0 +1,15 @@
+{
+  "name": "estoque-e2e",
+  "private": true,
+  "description": "Testes E2E do projeto modelo com Cypress",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "e2e": "start-server-and-test api http://localhost:8000/api/saude cy:run",
+    "api": "cd ../api && APP_ENV=test DATABASE_URL=${DATABASE_URL:-sqlite:///./estoque-e2e.db} uv run uvicorn app.main:app --port 8000"
+  },
+  "devDependencies": {
+    "cypress": ">=14.0.0",
+    "start-server-and-test": ">=2.0.0"
+  }
+}

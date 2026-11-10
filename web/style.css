@@ -1,0 +1,68 @@
+:root {
+  --fundo: #f4f6fa;
+  --cartao: #ffffff;
+  --texto: #1d2433;
+  --suave: #5b6578;
+  --borda: #dde2ec;
+  --primaria: #2557d6;
+  --perigo: #c2362f;
+  --ok: #1f8a4c;
+  --baixo: #b7791f;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--fundo);
+  color: var(--texto);
+}
+
+header { padding: 24px 16px 8px; max-width: 1000px; margin: 0 auto; }
+header h1 { margin: 0; }
+header p { margin: 4px 0 0; color: var(--suave); }
+
+main { max-width: 1000px; margin: 0 auto; padding: 16px; display: grid; gap: 16px; }
+
+.card {
+  background: var(--cartao);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 16px;
+  overflow-x: auto;
+}
+.card h2 { margin-top: 0; font-size: 1.15rem; }
+
+form { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+label { display: grid; gap: 4px; font-size: .9rem; color: var(--suave); }
+input, select {
+  font: inherit; padding: 8px 10px;
+  border: 1px solid var(--borda); border-radius: 6px; color: var(--texto); background: #fff;
+}
+.acoes { display: flex; gap: 8px; align-items: end; }
+
+button {
+  font: inherit; cursor: pointer; border: 0; border-radius: 6px;
+  padding: 8px 14px; background: var(--primaria); color: #fff;
+}
+button.secundario { background: #e8ecf5; color: var(--texto); }
+button.perigo { background: var(--perigo); }
+
+#mensagem { min-height: 1.4em; margin: 12px 0 0; }
+#mensagem.sucesso { color: var(--ok); }
+#mensagem.erro { color: var(--perigo); }
+
+.topo-lista { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
+.topo-lista h2 { margin: 0; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: .95rem; }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--borda); white-space: nowrap; }
+th { color: var(--suave); font-weight: 600; }
+.acoes-linha { display: flex; gap: 6px; }
+.acoes-linha button { padding: 4px 10px; font-size: .85rem; }
+
+.status { padding: 2px 8px; border-radius: 99px; font-size: .8rem; color: #fff; }
+.status.ok { background: var(--ok); }
+.status.baixo { background: var(--baixo); }
+.status.esgotado { background: var(--perigo); }
