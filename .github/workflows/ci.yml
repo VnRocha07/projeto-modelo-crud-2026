@@ -37,11 +37,24 @@ jobs:
       DATABASE_URL: mysql+pymysql://app:app@127.0.0.1:3306/estoque?charset=utf8mb4
     steps:
       - uses: actions/checkout@v4
+      - name: Espera o MySQL aceitar conexao TCP
+        run: |
+          for i in $(seq 1 30); do
+            mysql -h127.0.0.1 -uapp -papp -e "SELECT 1" estoque >/dev/null 2>&1 && exit 0
+            sleep 2
+          done
+          echo "MySQL nao respondeu" && exit 1
       - name: Cria o esquema no MySQL
         run: mysql -h127.0.0.1 -uapp -papp estoque < db/mysql/01-schema.sql
       - uses: astral-sh/setup-uv@v6
       - working-directory: api
         run: uv sync && uv run pytest -m integracao
+      - name: Demonstra a restricao UNIQUE (saida usada no INTENSIVO.md)
+        run: |
+          mysql -h127.0.0.1 -uapp -papp --default-character-set=utf8mb4 estoque < db/seed.sql
+          mysql -h127.0.0.1 -uapp -papp estoque -e \
+            "INSERT INTO produto (sku, nome, preco, quantidade, categoria_id) VALUES ('ELE-001', 'Repetido', 1.00, 1, 1)" \
+            && exit 1 || true
 
   e2e:
     name: E2E (Cypress + MySQL)
@@ -64,6 +77,13 @@ jobs:
       APP_ENV: test
     steps:
       - uses: actions/checkout@v4
+      - name: Espera o MySQL aceitar conexao TCP
+        run: |
+          for i in $(seq 1 30); do
+            mysql -h127.0.0.1 -uapp -papp -e "SELECT 1" estoque >/dev/null 2>&1 && exit 0
+            sleep 2
+          done
+          echo "MySQL nao respondeu" && exit 1
       - name: Cria esquema e seed no MySQL
         run: |
           mysql -h127.0.0.1 -uapp -papp estoque < db/mysql/01-schema.sql
