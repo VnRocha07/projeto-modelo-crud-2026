@@ -13,6 +13,16 @@ Projeto de referência para as UCs **Garantia da Qualidade de Software** e **Ban
 | **Testes E2E com Cypress** | [`e2e/cypress/e2e/produtos.cy.js`](e2e/cypress/e2e/produtos.cy.js) |
 | **CI** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml): os três níveis a cada push |
 
+## 🎓 Aulas do intensivão (slides)
+
+| Aula | Qualidade de Software | Banco de Dados |
+|---|---|---|
+| 1 — Visão geral | [abrir](https://petros.dev.br/garantia-qualidade-software-2026/slides-player/?src=../aulas/intensivo/slides.md&org=unifg) | [abrir](https://petros.dev.br/banco-de-dados-2026/slides-player/?src=../aulas/intensivo/slides.md&org=unifg) |
+| 2 — CRUD com banco de dados | [abrir](https://petros.dev.br/garantia-qualidade-software-2026/slides-player/?src=../aulas/intensivo-2-crud-banco/slides.md&org=unifg) | [abrir](https://petros.dev.br/banco-de-dados-2026/slides-player/?src=../aulas/intensivo-2-crud-banco/slides.md&org=unifg) |
+| 3 — Testes unitários | [abrir](https://petros.dev.br/garantia-qualidade-software-2026/slides-player/?src=../aulas/intensivo-3-unitarios/slides.md&org=unifg) | [abrir](https://petros.dev.br/banco-de-dados-2026/slides-player/?src=../aulas/intensivo-3-unitarios/slides.md&org=unifg) |
+| 4 — Testes de integração | [abrir](https://petros.dev.br/garantia-qualidade-software-2026/slides-player/?src=../aulas/intensivo-4-integracao/slides.md&org=unifg) | [abrir](https://petros.dev.br/banco-de-dados-2026/slides-player/?src=../aulas/intensivo-4-integracao/slides.md&org=unifg) |
+| 5 — Testes E2E com Cypress | [abrir](https://petros.dev.br/garantia-qualidade-software-2026/slides-player/?src=../aulas/intensivo-5-cypress/slides.md&org=unifg) | [abrir](https://petros.dev.br/banco-de-dados-2026/slides-player/?src=../aulas/intensivo-5-cypress/slides.md&org=unifg) |
+
 ## 📚 Por onde começar
 
 | Guia | Para quê |
