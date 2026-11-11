@@ -9,7 +9,13 @@
     "api": "cd ../api && APP_ENV=test DATABASE_URL=${DATABASE_URL:-sqlite:///./estoque-e2e.db} uv run uvicorn app.main:app --host 127.0.0.1 --port 8000"
   },
   "devDependencies": {
-    "cypress": ">=14.0.0",
+    "cypress": "^16.3.0",
     "start-server-and-test": ">=2.0.0"
-  }
+  },
+  "version": "1.0.0",
+  "main": "cypress.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
 }
