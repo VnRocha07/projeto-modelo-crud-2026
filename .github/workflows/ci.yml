@@ -49,12 +49,17 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - working-directory: api
         run: uv sync && uv run pytest -m integracao
-      - name: Demonstra a restricao UNIQUE (saida usada no INTENSIVO.md)
+      - name: Demonstra as restricoes do banco (saidas usadas nas aulas)
         run: |
           mysql -h127.0.0.1 -uapp -papp --default-character-set=utf8mb4 estoque < db/seed.sql
-          mysql -h127.0.0.1 -uapp -papp estoque -e \
-            "INSERT INTO produto (sku, nome, preco, quantidade, categoria_id) VALUES ('ELE-001', 'Repetido', 1.00, 1, 1)" \
-            && exit 1 || true
+          viola() {
+            echo "mysql> $1"
+            mysql -h127.0.0.1 -uapp -papp estoque -e "$1" && exit 1 || true
+          }
+          viola "INSERT INTO produto (sku, nome, preco, quantidade, categoria_id) VALUES ('ELE-001', 'Repetido', 1.00, 1, 1)"
+          viola "INSERT INTO produto (sku, nome, preco, quantidade, categoria_id) VALUES ('ELE-009', 'Sem categoria', 1.00, 1, 99)"
+          viola "UPDATE produto SET quantidade = -1 WHERE id = 1"
+          viola "DELETE FROM categoria WHERE id = 1"
 
   e2e:
     name: E2E (Cypress + MySQL)
