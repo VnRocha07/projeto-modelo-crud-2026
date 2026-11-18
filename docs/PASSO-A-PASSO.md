@@ -43,7 +43,7 @@ uv sync
 uv run pytest -q
 ```
 
-**Confira:** a última linha é `43 passed`.
+**Confira:** a última linha é `48 passed`.
 
 ```bash
 APP_ENV=test uv run uvicorn app.main:app --reload

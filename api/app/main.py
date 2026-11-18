@@ -3,6 +3,7 @@
 Rotas:
   GET    /api/saude
   GET    /api/categorias
+  DELETE /api/categorias/{id}
   GET    /api/produtos?busca=
   GET    /api/produtos/{id}
   POST   /api/produtos
@@ -19,6 +20,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy.exc import IntegrityError
 
 from app.db import RAIZ, criar_engine, preparar_banco, resetar_dados
 from app.repositorio import RepositorioProdutos
@@ -57,6 +59,19 @@ def saude():
 @app.get("/api/categorias", response_model=list[Categoria])
 def listar_categorias(repo=Depends(get_repositorio)):
     return repo.listar_categorias()
+
+
+@app.delete("/api/categorias/{categoria_id}", status_code=status.HTTP_204_NO_CONTENT)
+def remover_categoria(categoria_id: int, repo=Depends(get_repositorio)):
+    try:
+        removida = repo.remover_categoria(categoria_id)
+    except IntegrityError:
+        # A FK produto.categoria_id tem ON DELETE RESTRICT: o banco recusou o
+        # DELETE porque ainda existem produtos nesta categoria.
+        raise HTTPException(409, detail="categoria em uso")
+    if not removida:
+        raise HTTPException(404, detail="categoria nao encontrada")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @app.get("/api/produtos", response_model=list[Produto])

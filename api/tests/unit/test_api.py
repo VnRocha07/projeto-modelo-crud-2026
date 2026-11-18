@@ -9,6 +9,7 @@ from decimal import Decimal
 
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy.exc import IntegrityError
 
 from app.main import app, get_repositorio
 from app.regras import status_estoque
@@ -60,6 +61,12 @@ class FakeRepositorio:
 
     def remover(self, pid):
         return self.produtos.pop(pid, None) is not None
+
+    def remover_categoria(self, cid):
+        if any(p.categoria_id == cid for p in self.produtos.values()):
+            # simula a FK ON DELETE RESTRICT do banco de verdade
+            raise IntegrityError("DELETE FROM categoria", {}, Exception("FK"))
+        return self.categorias.pop(cid, None) is not None
 
 
 @pytest.fixture
@@ -142,3 +149,24 @@ def test_remover(cliente, repo):
 def test_rota_de_reset_nao_existe_fora_do_ambiente_de_teste(cliente):
     # APP_ENV nao e "test" aqui; a rota perigosa nao pode estar exposta
     assert cliente.post("/api/_test/reset").status_code in (404, 405)
+
+
+# ---------- exercicio: DELETE /api/categorias/{id} ----------
+
+
+def test_remover_categoria_devolve_204(cliente, repo):
+    assert cliente.delete("/api/categorias/1").status_code == 204
+    assert repo.categorias == {}
+    # ja foi apagada: a proxima chamada nao encontra mais
+    assert cliente.delete("/api/categorias/1").status_code == 404
+
+
+def test_remover_categoria_inexistente_devolve_404(cliente):
+    assert cliente.delete("/api/categorias/999").status_code == 404
+
+
+def test_remover_categoria_em_uso_devolve_409(cliente):
+    cliente.post("/api/produtos", json=novo(categoria_id=1))
+    resposta = cliente.delete("/api/categorias/1")
+    assert resposta.status_code == 409
+    assert resposta.json()["detail"] == "categoria em uso"

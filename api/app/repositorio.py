@@ -129,3 +129,15 @@ class RepositorioProdutos:
                 text("DELETE FROM produto WHERE id = :id"), {"id": produto_id}
             )
         return resultado.rowcount > 0
+
+    def remover_categoria(self, categoria_id: int) -> bool:
+        """Apaga a categoria; False se ela nao existia.
+
+        Se ainda houver produtos nela, o DELETE viola a FK com ON DELETE
+        RESTRICT e o SQLAlchemy levanta IntegrityError (nao contamos antes).
+        """
+        with self.engine.begin() as conn:
+            resultado = conn.execute(
+                text("DELETE FROM categoria WHERE id = :id"), {"id": categoria_id}
+            )
+        return resultado.rowcount > 0

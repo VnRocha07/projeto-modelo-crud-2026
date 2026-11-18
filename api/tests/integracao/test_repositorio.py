@@ -11,10 +11,12 @@ import os
 from decimal import Decimal
 
 import pytest
+from fastapi.testclient import TestClient
 from sqlalchemy import text
 from sqlalchemy.exc import DBAPIError, IntegrityError
 
 from app.db import criar_engine, preparar_banco, resetar_dados
+from app.main import app, get_repositorio
 from app.repositorio import RepositorioProdutos
 from app.schemas import ProdutoEntrada
 
@@ -96,6 +98,36 @@ def test_banco_recusa_quantidade_negativa(engine, repo):
 def test_banco_impede_apagar_categoria_em_uso(engine, repo):
     with pytest.raises(IntegrityError), engine.begin() as conn:
         conn.execute(text("DELETE FROM categoria WHERE id = 1"))
+
+
+# ---------- exercicio: DELETE /api/categorias/{id} ----------
+
+
+def test_repositorio_recusa_apagar_categoria_em_uso(repo):
+    # o repositorio tenta o DELETE direto, sem contar produtos antes;
+    # a FK ON DELETE RESTRICT recusa e o IntegrityError sobe
+    with pytest.raises(IntegrityError):
+        repo.remover_categoria(1)
+    assert repo.categoria_existe(1) is True
+
+
+def test_rota_delete_categoria_com_banco_de_verdade(engine, repo):
+    """204, 404 e 409 com o banco de verdade: o 409 vem do IntegrityError da FK."""
+    app.dependency_overrides[get_repositorio] = lambda: repo
+    try:
+        # sem "with": nao roda o lifespan, para nao criar um segundo banco
+        cliente = TestClient(app)
+        # categoria 1 (Eletronicos) ainda tem produtos no seed -> o banco recusa
+        assert cliente.delete("/api/categorias/1").status_code == 409
+        # categoria que nao existe
+        assert cliente.delete("/api/categorias/999").status_code == 404
+        # uma categoria sem produtos pode ser apagada
+        with engine.begin() as conn:
+            conn.execute(text("INSERT INTO categoria (id, nome) VALUES (99, 'Vazia')"))
+        assert cliente.delete("/api/categorias/99").status_code == 204
+        assert repo.categoria_existe(99) is False
+    finally:
+        app.dependency_overrides.clear()
 
 
 def test_resumo_agrupa_por_categoria(repo):

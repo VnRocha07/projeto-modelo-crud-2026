@@ -68,7 +68,7 @@ uv run pytest -q
 **Checkpoint:**
 
 ```
-43 passed
+48 passed
 ```
 
 Depois: `APP_ENV=test uv run uvicorn app.main:app --reload` e abra <http://localhost:8000>.
@@ -138,14 +138,14 @@ Referência: [`api/tests/`](api/tests/).
 uv run pytest tests/unit -q
 ```
 ```
-33 passed
+36 passed
 ```
 
 ```bash
 uv run pytest -m integracao -q
 ```
 ```
-10 passed, 33 deselected
+12 passed, 36 deselected
 ```
 
 ### Etapa 4 — Cypress (1h30)

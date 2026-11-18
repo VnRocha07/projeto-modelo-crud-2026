@@ -61,6 +61,10 @@ nome UNIQUE   1 ────────< N   sku           UNIQUE, formato AAA-
 Pré-requisitos: **Python 3.13** com [`uv`](https://docs.astral.sh/uv/), **Node 20+**, e
 **Docker** (opcional: sem ele, a API usa SQLite).
 
+> 💡 **Windows/PowerShell:** os comandos desta seção usam sintaxe bash. No terminal do VS
+> Code no Windows, use o guia **[docs/COMO-RODAR-NO-WINDOWS.md](COMO-RODAR-NO-WINDOWS.md)**,
+> com os mesmos passos em PowerShell e os checkpoints do pytest.
+
 ### Opção A: com Docker (MySQL 8.4, o motor da disciplina de BD)
 
 ```bash
@@ -104,6 +108,10 @@ Integração no MySQL, com o `docker compose` de pé:
 ```bash
 DATABASE_URL="mysql+pymysql://app:app@127.0.0.1:3306/estoque?charset=utf8mb4" uv run pytest -m integracao
 ```
+
+> 🧪 **Windows/PowerShell:** o passo a passo completo (pytest, MySQL no Docker, prova das
+> restrições e a demonstração do exercício `DELETE /api/categorias/{id}` → 409/404/204) está
+> em **[docs/COMO-RODAR-NO-WINDOWS.md](docs/COMO-RODAR-NO-WINDOWS.md)**, seções 9 a 13.
 
 ### E2E (Cypress)
 
